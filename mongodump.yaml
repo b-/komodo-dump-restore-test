@@ -1,0 +1,15 @@
+services:
+  # mask core so it doesn't run
+  core: !reset
+  mongodump:
+    image: mongo:5
+    depends_on: ["${DRIVER:-ferretdb}"]
+    volumes:
+      #- ~/mongodump/dump:/mongodump:z
+      - /tmp/my-mongodump-test:/mongodump:z
+    working_dir: /mongodump
+      #command: mongodump --uri=mongodb://${KOMODO_DB_USERNAME}:${KOMODO_DB_PASSWORD}@${DRIVER:-ferretdb}:27017/?authMechanism=PLAIN -vvvvv
+    command: mongodump --uri=mongodb://${DRIVER:-ferretdb}:27017/ -vvvvv
+
+volumes:
+  mongodump:

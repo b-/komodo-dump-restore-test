@@ -1,0 +1,16 @@
+services:
+  core: !reset # mask core so it doesn't run
+
+
+  mongorestore:
+    image: mongo:5
+    depends_on: ["${DRIVER:-mongo}"]
+    volumes:
+      #- ~/mongorestore/dump:/mongodump:z
+      - /tmp/my-mongodump-test:/mongodump:z
+    working_dir: /mongodump
+    #command: mongorestore --uri=mongodb://${KOMODO_DB_USERNAME}:${KOMODO_DB_PASSWORD}@${driver:-mongo}:27017/?authMechanism=PLAIN -vvvvv
+    command: mongorestore --uri=mongodb://${KOMODO_DB_USERNAME}:${KOMODO_DB_PASSWORD}@${DRIVER:-mongo}:27017/ -vvvvv
+    #command: mongorestore --uri=mongodb://${driver:-mongo}:27017/
+volumes: 
+  mongodump:
